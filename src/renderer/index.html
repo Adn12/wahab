@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <title>renderer</title>
+    <style>
+      /* cairo-regular - arabic */
+      @font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+       url('./assets/fonts/cairo-v20-arabic-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('./assets/fonts/cairo-v20-arabic-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* cairo-700 - arabic */
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 700;
+  src: local(''),
+       url('./assets/fonts/cairo-v20-arabic-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('./assets/fonts/cairo-v20-arabic-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+      @font-face {
+        font-family: "Tajawal";
+        font-style: normal;
+        font-weight: 400;
+        src: local(""), url("./assets/fonts/tajawal-v9-arabic-regular.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("./assets/fonts/tajawal-v9-arabic-regular.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+      }
+      /* tajawal-700 - arabic */
+      @font-face {
+        font-family: "Tajawal";
+        font-style: normal;
+        font-weight: 700;
+        src: local(""), url("./assets/fonts/tajawal-v9-arabic-700.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("./assets/fonts/tajawal-v9-arabic-700.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="./main.ts"></script>
+   
+  </body>
+</html>
