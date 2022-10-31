@@ -5,17 +5,88 @@ const store = createStore({
   state () {
     return {
       searchTerm:"",
+      db:[],
+      found:{real:false,ID:"",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"},
+      foundIndex:0,
     }
   },
   mutations: {
     updateSearchTerm (state,payload) {
       state.searchTerm = payload;
-    }
+    },
+    updateDb (state,payload) {
+      state.db = payload;
+    },
+    search (state) {
+      if(state.searchTerm.length < 12) state.found.real = false;
+      for (var i = 0; i < state.db.length; i++) {
+        
+        if (state.db[i].ID ==state.searchTerm) {
+          state.found = state.db[i];
+          state.found.real = true;
+          state.foundIndex = i;
+          return;
+        }
+      }
+      state.found.real = false;
+    },
+    updateFoundID (state,payload) {
+      state.found.ID = payload;
+    },
+    updateFoundName (state,payload) {
+      state.found.Name = payload;
+    },
+    updateFoundDept (state,payload) {
+      state.found.Dept  = payload;
+    },
+    updateFoundJob (state,payload) {
+      state.found.Job = payload;
+    },
+    updateFoundCivil_ID_expire_date (state,payload) {
+      state.found['Civil ID expire date'] = payload;
+    },
+    updateFoundKOC_expire_date (state,payload) {
+      state.found['KOC expire date'] = payload;
+    },
+    updateFoundShuaiba_Expire_date (state,payload) {
+      state.found['Shuaiba Expire date'] = payload;
+    },
   },
   actions:{
     updateSearchTerm(context,payload){
       context.commit('updateSearchTerm',payload);
-    }
+    },
+    updateDb(context,payload){
+      context.commit('updateDb',payload);
+    },
+    search(context){
+      
+      context.commit('search');
+    },
+
+
+
+    updateFoundID(context,payload){
+      context.commit('updateFoundID',payload);
+    },
+    updateFoundName(context,payload){
+      context.commit('updateFoundName',payload);
+    },
+    updateFoundDept(context,payload){
+      context.commit('updateFoundDept',payload);
+    },
+    updateFoundJob(context,payload){
+      context.commit('updateFoundJob',payload);
+    },
+    updateFoundCivil_ID_expire_date(context,payload){
+      context.commit('updateFoundCivil_ID_expire_date',payload);
+    },
+    updateFoundKOC_expire_date(context,payload){
+      context.commit('updateFoundKOC_expire_date',payload);
+    },
+    updateFoundShuaiba_Expire_date(context,payload){
+      context.commit('updateFoundShuaiba_Expire_date',payload);
+    },
   }
 })
 export default store;

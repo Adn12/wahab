@@ -9,7 +9,10 @@ function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 1024,
     height: 800,
+    transparent: true, 
+    
    resizable: false,
+   frame: false,
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
       nodeIntegration: false,
