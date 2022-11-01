@@ -58,9 +58,10 @@ export default {
   },
   mounted() {},
   methods: {
-    send() {
+    save() {
       console.log(this.$store.state.found);
-      //window.api.send("toMain", JSON.stringify(this.$store.state.db));
+      this.$store.dispatch("updateDatabase");
+      window.api.send("toMain", JSON.stringify(this.$store.state.db));
     },
   },
   computed: {

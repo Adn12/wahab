@@ -1,14 +1,14 @@
 <template>
   <div  id="app">
     <div class="title-bar">
-      <div class="title-button x-button">x</div>
-      <div class="title-button minimize-button">-</div>
-      <div class="empty-title"></div>
+      <div @click="close()" class="title-button x-button">x</div>
+      <div @click="minimize()" class="title-button minimize-button">-</div>
+      <div class="empty-title"><p class="title">قاعدة بيانات الموظفين</p></div>
     </div>
     <div class="heading">
       <router-link @click="putLine(1)" class="menu-item" to="/">البحث<hr class="underline" v-if="oneActive"/></router-link>
       <router-link @click="putLine(2)" class="menu-item" to="/add">الإضافة<hr class="underline" v-if="twoActive"/></router-link>
-      <div class="menu-item"> <input maxlength="120" placeholder="الرقم المدني" v-model="searchTerm" class=" search"/><img class="search-icon" @click="search()" src="./assets/search.svg"/></div>
+      <div class="menu-item"> <input maxlength="120" @keyup.enter="search()" placeholder="الرقم المدني" v-model="searchTerm" class=" search"/><img class="search-icon" @click="search()" src="./assets/search.svg"/></div>
     </div>
    <hr class="heading-divider"/>
     <router-view></router-view>
@@ -47,6 +47,12 @@ export default {
   }
 },
   methods:{
+    close(){
+window.api.send("closeApp");
+    },
+    minimize(){
+window.api.send("minimizeApp");
+    },
     putLine(x){
       if(x ==1) {this.oneActive = true; this.twoActive = false}
       if(x ==2) {this.oneActive = false; this.twoActive = true}
@@ -81,12 +87,29 @@ border-top-right-radius: 20px; */
    color:white;
    cursor: pointer;
   user-select: none;
+  z-index:99;
 }
 .empty-title{
   flex:20;
+ 
  -webkit-app-region: drag;
+ 
+}
+.title{
+   color: white;
+  font-family: "Cairo";
+  font-size:14px;
+  position: absolute;
+margin-left: auto;
+margin-right: auto;
+width:auto;
+left: 0;
+top:-9px;
+right: 0;
+text-align: center;
 }
 .x-button{
+
 }
 .x-button:hover{
   background:#2f6962;
@@ -155,7 +178,7 @@ body{
    background: #1E1F23;
         height:100%;
         box-shadow: 0 0 2px 0px #62D8CA inset, 0 0 2px 0px #62D8CA;
-        border:3px solid #62D8CA;
+        border:1px solid #62D8CA;
         min-height:650px;
         box-sizing: border-box;
         overflow:hidden;

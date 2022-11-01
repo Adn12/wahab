@@ -1,12 +1,20 @@
 import {app, BrowserWindow, ipcMain, session} from 'electron';
 import {join} from 'path';
-
+import contextMenu from 'electron-context-menu';
+contextMenu({
+	showSaveImageAs: true,
+  showInspectElement:false,
+  showSearchWithGoogle:false,
+  showSelectAll:false,
+  shouldShowMenu: (event, parameters) => parameters.inputFieldType == 'plainText'
+});
 import {readFileSync,writeFileSync} from 'fs';
 
 const path = join(app.getAppPath(), 'static', 'db.json');
 const buffer = readFileSync(path);
+var mainWindow;
 function createWindow () {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1024,
     height: 800,
     transparent: true, 
@@ -64,6 +72,9 @@ ipcMain.on("toMain", (event, args) => {
   const path = join(app.getAppPath(), 'static', 'db.json');
   writeFileSync(path, args)
 });
-ipcMain.on('message', (event, message) => {
-  console.log(message);
+ipcMain.on('closeApp', (event) => {
+  app.quit();
+})
+ipcMain.on('minimizeApp', (event) => {
+  mainWindow.minimize();
 })

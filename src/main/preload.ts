@@ -3,7 +3,7 @@ import {contextBridge, ipcRenderer} from 'electron';
 contextBridge.exposeInMainWorld("api", {
   send: (channel, data) => {
       // whitelist channels
-      let validChannels = ["toMain"];
+      let validChannels = ["toMain","closeApp",'minimizeApp'];
       if (validChannels.includes(channel)) {
           ipcRenderer.send(channel, data);
       }
