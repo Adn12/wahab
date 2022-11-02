@@ -6,7 +6,7 @@ const store = createStore({
     return {
       searchTerm:"",
       db:[],
-      found:{real:false,ID:"",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"},
+      found:{ID:"",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"},
       foundIndex:0,
     }
   },
@@ -18,17 +18,31 @@ const store = createStore({
       state.db = payload;
     },
     search (state) {
-      if(state.searchTerm.length < 12) state.found.real = false;
+      console.log("FOUND ID",state.found.ID)
+      if(state.searchTerm.length < 12) {
+        console.log(state.db);
+        state.found = {ID:"",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"};
+        return;
+      }
+      console.log(state.db);
       for (var i = 0; i < state.db.length; i++) {
-        
+        //console.log(i);
         if (state.db[i].ID ==state.searchTerm) {
           state.found = state.db[i];
-          state.found.real = true;
+          console.log(state.found);
           state.foundIndex = i;
           return;
         }
       }
-      state.found.real = false;
+      
+      state.found = {ID:"",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"};
+    },
+    saveDbChanges(state){
+     
+        state.db[state.foundIndex] = state.found;
+      
+     
+     
     },
     updateFoundID (state,payload) {
       state.found.ID = payload;
@@ -63,7 +77,11 @@ const store = createStore({
       
       context.commit('search');
     },
-
+    saveDbChanges(context){
+     
+      context.commit('saveDbChanges');
+    
+    },
 
 
     updateFoundID(context,payload){

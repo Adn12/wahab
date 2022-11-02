@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$store.state.found.real == true" class="container">
+  <div v-if="$store.state.found.ID.length > 0" class="container">
     <div class="main-container">
       <div class="image-container">
       <img :src="`./assets/photos/${$store.state.found.ID}.jpg`"/>
@@ -60,8 +60,8 @@ export default {
   methods: {
     save() {
       console.log(this.$store.state.found);
-      this.$store.dispatch("updateDatabase");
-      window.api.send("toMain", JSON.stringify(this.$store.state.db));
+      this.$store.dispatch("saveDbChanges");
+     window.api.send("toMain", JSON.stringify(this.$store.state.db));
     },
   },
   computed: {
