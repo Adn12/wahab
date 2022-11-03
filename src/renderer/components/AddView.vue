@@ -3,7 +3,6 @@
     <div class="main-container">
       <div class="image-container">
         <img :src="`./assets/photos/${getPhoto()}.jpg`" />
-       
       </div>
       <div class="element-containers-container">
         <div class="element-container">
@@ -48,7 +47,7 @@
 
 <script>
 //import Swal from "sweetalert2";
-
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -59,20 +58,79 @@ export default {
       Civil_ID_expire_date: "",
       KOC_expire_date: "",
       Shuaiba_Expire_date: "",
-    }
+    };
   },
   mounted() {},
   methods: {
     add() {
-      this.$store.state.db.push({ ID: this.ID, Name: this.Name, Dept: this.Dept, Job: this.Job, "Civil ID expire date": this.Civil_ID_expire_date, "KOC expire date": this.KOC_expire_date, "Shuaiba Expire date": this.Shuaiba_Expire_date })
-      window.api.send("toMain", JSON.stringify(this.$store.state.db))
+      if (this.ID.length != 12) {
+        Swal.fire({
+          icon: "error",
+          title: "حصل خطأ",
+          text: "الرجاء التأكد من الرقم المدني",
+          confirmButtonText: "حسنا",
+          backdrop: false,
+          customClass: {
+            container: "alert-container",
+            popup: "alert-popup",
+            header: "alert-header",
+            title: "alert-title",
+            icon: "alert-icon",
+
+            htmlContainer: "alert-html-container",
+            confirmButton: "alert-confirm-button",
+          },
+        });
+        return;
+      }
+      for (var i = 0; i < this.$store.state.db.length; i++) {
+        if (this.$store.state.db[i].ID == this.ID) {
+          Swal.fire({
+            icon: "error",
+            title: "حصل خطأ",
+            text: "يوجد موظف بنفس الرقم المدني في قاعدة البيانات",
+            confirmButtonText: "حسنا",
+            backdrop: false,
+            customClass: {
+              container: "alert-container",
+              popup: "alert-popup",
+              header: "alert-header",
+              title: "alert-title",
+              icon: "alert-icon",
+
+              htmlContainer: "alert-html-container",
+              confirmButton: "alert-confirm-button",
+            },
+          });
+          return;
+        }
+      }
+      this.$store.state.db.push({ ID: this.ID, Name: this.Name, Dept: this.Dept, Job: this.Job, "Civil ID expire date": this.Civil_ID_expire_date, "KOC expire date": this.KOC_expire_date, "Shuaiba Expire date": this.Shuaiba_Expire_date });
+      window.api.send("toMain", JSON.stringify(this.$store.state.db));
+      Swal.fire({
+          icon: "success",
+          title: "نجاح!",
+          text: "تم إضافة الموظف بنجاح",
+          confirmButtonText: "حسنا",
+          backdrop: false,
+          customClass: {
+            container: "alert-container",
+            popup: "alert-popup",
+            header: "alert-header",
+            title: "alert-title",
+            icon: "alert-icon",
+
+            htmlContainer: "alert-html-container",
+            confirmButton: "alert-confirm-button",
+          },
+        });
     },
     getPhoto() {
-      return "add"
+      return "add";
     },
   },
   computed: {},
-}
+};
 //window.api.receive("fromMain", (obj) => {});
 </script>
 <style scoped>
@@ -100,7 +158,6 @@ img {
   width: 200px;
   border-radius: 20px;
   cursor: pointer;
-  
 }
 .image-container {
   flex: auto;
@@ -142,7 +199,7 @@ input {
   text-align: center;
   outline: none;
   padding: 10px;
-  background: #d6d862;
+  background: #62d868;
   font-size: 16px;
   font-family: "Cairo";
   border: 1px solid #3b3b3b;

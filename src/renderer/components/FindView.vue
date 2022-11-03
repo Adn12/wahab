@@ -48,12 +48,12 @@
    <button class="save-button" @click="save()">حفظ التغييرات</button>
   </div>
   <div class="no-search" v-else>
-    <p>الرجاء البحث باستخدام الرقم المدني</p>
+    <p>{{$store.state.findViewText}}</p>
   </div>
 </template>
 
 <script>
-//import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 
 export default {
   data() {
@@ -62,13 +62,32 @@ export default {
     };
   },
   mounted() {
-    
+    if(this.$store.state.searchTerm == ""){
+      this.$store.state.findViewText = "الرجاء البحث باستخدام الرقم المدني";
+    }
   },
   methods: {
     save() {
       console.log(this.$store.state.found);
       this.$store.dispatch("saveDbChanges");
      window.api.send("toMain", JSON.stringify(this.$store.state.db));
+     Swal.fire({
+          icon: "success",
+          title: "نجاح!",
+          text: "تم تحديث بيانات الموظف بنجاح",
+          confirmButtonText: "حسنا",
+          backdrop: false,
+          customClass: {
+            container: "alert-container",
+            popup: "alert-popup",
+            header: "alert-header",
+            title: "alert-title",
+            icon: "alert-icon",
+
+            htmlContainer: "alert-html-container",
+            confirmButton: "alert-confirm-button",
+          },
+        });
     },
    
   },

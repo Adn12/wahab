@@ -62,6 +62,7 @@ export default {
   },
   methods: {
     checkPassword() {
+      
       if (this.password == "123456") {
         this.loggedIn = true
       }

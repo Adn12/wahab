@@ -1,28 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" dir="rtl" >
+<html lang="en" dir="rtl">
   <head>
     <meta charset="utf-8" />
     <title>قاعدة البيانات</title>
+
     <style>
-      
+      .alert-title{
+        font-size:20px !important;
+      }
+      .alert-icon{
+        font-size:10px;
+      }
+      .alert-confirm-button{
+        color:black !important;
+        background:#d6d862 !important;
+        font-family: "Cairo" !important;
+        outline: none !important;
+      }
+      .alert-container {
+        max-height:650px;
+        font-family: "Cairo";
+      }
+      .alert-popup {
+        border: 1px solid #62d8ca !important;
+        background: #1e1f23 !important;
+        max-width: 300px !important;
+      }
       /* cairo-regular - arabic */
       @font-face {
-  font-family: 'Cairo';
-  font-style: normal;
-  font-weight: 400;
-  src: local(''),
-       url('./assets/fonts/cairo-v20-arabic-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('./assets/fonts/cairo-v20-arabic-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-/* cairo-700 - arabic */
-@font-face {
-  font-family: 'Cairo';
-  font-style: normal;
-  font-weight: 700;
-  src: local(''),
-       url('./assets/fonts/cairo-v20-arabic-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('./assets/fonts/cairo-v20-arabic-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
+        font-family: "Cairo";
+        font-style: normal;
+        font-weight: 400;
+        src: local(""), url("./assets/fonts/cairo-v20-arabic-regular.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("./assets/fonts/cairo-v20-arabic-regular.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+      }
+      /* cairo-700 - arabic */
+      @font-face {
+        font-family: "Cairo";
+        font-style: normal;
+        font-weight: 700;
+        src: local(""), url("./assets/fonts/cairo-v20-arabic-700.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("./assets/fonts/cairo-v20-arabic-700.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+      }
       @font-face {
         font-family: "Tajawal";
         font-style: normal;
@@ -38,9 +55,8 @@
       }
     </style>
   </head>
-  <body  >
-    <div  id="app"></div>
+  <body>
+    <div id="app"></div>
     <script type="module" src="./main.ts"></script>
-   
   </body>
 </html>
