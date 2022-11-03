@@ -84,6 +84,7 @@ export default {
     },
     search() {
       console.log("search")
+      this.$store.dispatch("updateNoPhoto",false);
       this.$store.dispatch("search")
       this.oneActive = true
       this.twoActive = false

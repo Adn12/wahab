@@ -1,49 +1,165 @@
 <template>
-  <div id="container">
-   Add
+  <div class="container">
+    <div class="main-container">
+      <div class="image-container">
+        <img :src="`./assets/photos/${getPhoto()}.jpg`" />
+       
+      </div>
+      <div class="element-containers-container">
+        <div class="element-container">
+          <div class="element">
+            <label>الرقم المدني</label>
+            <input v-model="ID" />
+          </div>
+          <div class="element">
+            <label>الإسم</label>
+            <input v-model="Name" />
+          </div>
+          <div class="element">
+            <label>القسم</label>
+            <input v-model="Dept" />
+          </div>
+        </div>
+        <div class="element-container">
+          <div class="element">
+            <label>الوظيفة</label>
+            <input v-model="Job" />
+          </div>
+          <div class="element">
+            <label>تاريخ إنتهاء البطاقة المدنية</label>
+            <input v-model="Civil_ID_expire_date" />
+          </div>
+          <div class="element">
+            <label>تاريخ انتهاء الKOC</label>
+            <input v-model="KOC_expire_date" />
+          </div>
+        </div>
+        <div class="element-container">
+          <div class="element">
+            <label>تاريخ انتهاء الشعبة</label>
+            <input v-model="Shuaiba_Expire_date" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="save-button" @click="add()">إضافة موظف</button>
   </div>
 </template>
 
 <script>
-import Swal from "sweetalert2";
+//import Swal from "sweetalert2";
+
 export default {
   data() {
     return {
-      name: "adnan",
-      found: "",
-      id: null,
-      i: null,
-      db: [],
-    };
+      ID: "",
+      Name: "",
+      Dept: "",
+      Job: "",
+      Civil_ID_expire_date: "",
+      KOC_expire_date: "",
+      Shuaiba_Expire_date: "",
+    }
+  },
+  mounted() {},
+  methods: {
+    add() {
+      this.$store.state.db.push({ ID: this.ID, Name: this.Name, Dept: this.Dept, Job: this.Job, "Civil ID expire date": this.Civil_ID_expire_date, "KOC expire date": this.KOC_expire_date, "Shuaiba Expire date": this.Shuaiba_Expire_date })
+      window.api.send("toMain", JSON.stringify(this.$store.state.db))
+    },
+    getPhoto() {
+      return "add"
+    },
   },
   computed: {},
-  mounted() {
-    window.api.receive("fromMain", (obj) => {
-      this.db = obj;
-      Swal.fire({
-        title: "Error!",
-        text: "Do you want to continue",
-        icon: "error",
-        confirmButtonText: "Cool",
-      });
-    });
-  },
-  methods: {
-    send() {
-      this.db[this.i].Name = this.name;
-      window.api.send("toMain", JSON.stringify(this.db));
-    },
-    find() {
-      for (var i = 0; i < this.db.length; i++) {
-        // look for the entry with a matching `code` value
-        if (this.db[i].ID == this.id) {
-          this.found = this.db[i];
-          this.i = i;
-          return;
-        }
-      }
-    },
-  },
-};
+}
 //window.api.receive("fromMain", (obj) => {});
 </script>
+<style scoped>
+.container {
+  padding: 10px;
+  width: 90%;
+  margin: 50px auto 0 auto;
+  text-align: center;
+}
+.element-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.main-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+img {
+  width: 200px;
+  border-radius: 20px;
+  cursor: pointer;
+  
+}
+.image-container {
+  flex: auto;
+}
+.element-containers-container {
+  flex: 10;
+}
+.element {
+  flex: 1;
+}
+
+label {
+  color: white;
+  font-family: "Cairo";
+  font-size: 12px;
+  display: block;
+}
+input {
+  border-radius: 5px;
+  color: white;
+  border: none;
+  width: 90%;
+  direction: rtl;
+  text-align: center;
+  outline: none;
+  padding: 10px;
+  background: #000000;
+  font-size: 16px;
+  font-family: "Tajawal";
+  border: 1px solid #3b3b3b;
+}
+.save-button {
+  border-radius: 10px;
+  color: black;
+  border: none;
+  font-weight: 400;
+  width: 90%;
+  direction: rtl;
+  text-align: center;
+  outline: none;
+  padding: 10px;
+  background: #d6d862;
+  font-size: 16px;
+  font-family: "Cairo";
+  border: 1px solid #3b3b3b;
+  margin-top: 70px;
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+.save-button:hover {
+  background: white;
+  color: black;
+}
+.no-search {
+  width: 100%;
+  margin-top: 200px;
+  text-align: center;
+  font-size: 30px;
+  color: #3b3b3b;
+  font-family: "Cairo";
+}
+</style>

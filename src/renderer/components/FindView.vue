@@ -2,7 +2,10 @@
   <div v-if="$store.state.found.ID.length > 0" class="container">
     <div class="main-container">
       <div class="image-container">
-      <img :src="`./assets/photos/${$store.state.found.ID}.jpg`"/>
+      <img class="photo" @error="$store.state.noPhoto = true;"  :src="`./assets/photos/${photoUrl}.jpg`"/>
+       <!-- <object class="photo" :data="`./assets/photos/${$store.state.found.ID}.jpg`" type="image/jpeg">
+          <img class="photo" src="`./assets/photos/no_photo.jpg`" />
+        </object> -->
       </div>
       <div class="element-containers-container">
     <div class="element-container">
@@ -54,17 +57,38 @@
 
 export default {
   data() {
-    return {};
+    return {
+     
+    };
   },
-  mounted() {},
+  mounted() {
+    
+  },
   methods: {
     save() {
       console.log(this.$store.state.found);
       this.$store.dispatch("saveDbChanges");
      window.api.send("toMain", JSON.stringify(this.$store.state.db));
     },
+   
   },
   computed: {
+    photoUrl(){
+      if(this.$store.state.noPhoto == false){
+        return this.$store.state.found.ID;
+      }
+      else{
+        return("no_photo");
+      }
+    },
+    // noPhoto: {
+    //   get() {
+    //     return this.$store.state.noPhoto;
+    //   },
+    //   set(value) {
+    //     this.$store.dispatch("updateNoPhoto", value);
+    //   },
+    // },
     ID: {
       get() {
         return this.$store.state.found.ID;
@@ -146,11 +170,12 @@ export default {
   justify-content: center;
   text-align: center;
 }
-img{
+.photo{
   width:200px;
   border-radius: 20px;
   
 }
+
 .image-container{
   flex:auto;
  
