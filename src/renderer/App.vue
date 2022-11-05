@@ -23,6 +23,8 @@
     <div class="login-container" v-else>
       <label class="login-label">الرجاء ادخال كلمة السر</label>
       <input v-model="password" @keyup="checkPassword()" class="password-input" type="password" />
+      <div @click="openDialog()">UPLOAD</div>
+      <input @change="onFileChange" type="file" style="display: none" ref="photoUpload" />
     </div>
   </div>
 </template>
@@ -42,58 +44,67 @@ export default {
       twoActive: false,
       loggedIn: false,
       password: null,
-    }
+    };
   },
   mounted() {
     window.api.receive("fromMain", (obj) => {
-      console.log(obj)
-      this.$store.dispatch("updateDb", obj)
-    })
+      console.log(obj);
+      this.$store.dispatch("updateDb", obj);
+    });
   },
   computed: {
     searchTerm: {
       get() {
-        return this.$store.state.searchTerm
+        return this.$store.state.searchTerm;
       },
       set(value) {
-        this.$store.dispatch("updateSearchTerm", value)
+        this.$store.dispatch("updateSearchTerm", value);
       },
     },
   },
   methods: {
-    checkPassword() {
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      console.log(files[0].path);
+      if (!files.length) return;
       
+    },
+    openDialog() {
+      console.log("upload");
+      this.$refs.photoUpload.click();
+    },
+    checkPassword() {
       if (this.password == "123456") {
-        this.loggedIn = true
+        this.loggedIn = true;
       }
     },
     close() {
-      window.api.send("closeApp")
+      window.api.send("closeApp");
     },
     minimize() {
-      window.api.send("minimizeApp")
+      window.api.send("minimizeApp");
     },
     putLine(x) {
       if (x == 1) {
-        this.oneActive = true
-        this.twoActive = false
+        this.oneActive = true;
+        this.twoActive = false;
       }
       if (x == 2) {
-        this.oneActive = false
-        this.twoActive = true
+        this.oneActive = false;
+        this.twoActive = true;
       }
     },
     search() {
-      console.log("search")
-      this.$store.dispatch("updateNoPhoto",false);
-      this.$store.dispatch("search")
-      this.oneActive = true
-      this.twoActive = false
-      this.$router.push("/")
+      console.log("search");
+      this.$store.dispatch("updateNoPhoto", false);
+      this.$store.dispatch("search");
+      this.oneActive = true;
+      this.twoActive = false;
+      this.$router.push("/");
     },
   },
   //components: { FindView },
-}
+};
 </script>
 <style>
 .title-bar {
@@ -115,19 +126,19 @@ border-top-right-radius: 20px; */
   user-select: none;
   z-index: 99;
 }
-.login-container{
+.login-container {
   text-align: center;
-  margin-top:200px;
+  margin-top: 200px;
 }
-.login-label{
-color:#62d8ca;
-font-family: "Cairo";
-display:block;
-font-size:20px;
+.login-label {
+  color: #62d8ca;
+  font-family: "Cairo";
+  display: block;
+  font-size: 20px;
 }
-.password-input{
-  margin-top:10px;
-border-radius: 5px;
+.password-input {
+  margin-top: 10px;
+  border-radius: 5px;
   color: white;
   border: none;
   width: 200px;
