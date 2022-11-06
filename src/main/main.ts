@@ -11,6 +11,8 @@ contextMenu({
 import {readFileSync,writeFileSync} from 'fs';
 
 const path = join(app.getAppPath(), 'static', 'db.json');
+//const photosPath = join(app.getAppPath(), 'static', '/assets/photos/');
+
 const buffer = readFileSync(path);
 var mainWindow;
 function createWindow () {
@@ -33,11 +35,22 @@ function createWindow () {
     mainWindow.loadURL(`http://localhost:${rendererPort}`).then(()=>{
       const path = join(app.getAppPath(), 'static', 'db.json');
       const buffer = readFileSync(path, 'utf8');
-      mainWindow.webContents.send("fromMain",JSON.parse(buffer) );
+      mainWindow.webContents.on('dom-ready', () => {
+        mainWindow.webContents.send("fromMain",JSON.parse(buffer) );
+        mainWindow.webContents.send("photosPath",path );
+      })
+      
+      
     });
   }
   else {
     mainWindow.loadFile(join(app.getAppPath(), 'renderer', 'index.html'));
+    const path = join(app.getAppPath(), 'static', 'db.json');
+      const buffer = readFileSync(path, 'utf8');
+      mainWindow.webContents.on('dom-ready', () => {
+        mainWindow.webContents.send("fromMain",JSON.parse(buffer) );
+        mainWindow.webContents.send("photosPath",path );
+      })
   }
   
 }

@@ -9,6 +9,8 @@
         "allowToChangeInstallationDirectory": true,
         "shortcutName": "Electron App"
     },
+    "asar": false,
+    
     "win": {
         "target": "nsis"
     },

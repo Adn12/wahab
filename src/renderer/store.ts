@@ -9,7 +9,8 @@ const store = createStore({
       noPhoto:false,
       found:{ID:"",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"},
       foundIndex:0,
-      findViewText:"الرجاء البحث باستخدام الرقم المدني"
+      findViewText:"الرجاء البحث باستخدام الرقم المدني",
+      photosPath:"./photos/",
     }
   },
   mutations: {
@@ -18,6 +19,7 @@ const store = createStore({
     },
     updateDb (state,payload) {
       state.db = payload;
+      console.log("THIS IS DB",payload);
     },
     search (state) {
       console.log("FOUND ID",state.found.ID)
@@ -31,11 +33,12 @@ const store = createStore({
         //console.log(i);
         if (state.db[i].ID ==state.searchTerm) {
           state.found = state.db[i];
-          console.log(state.found);
+          console.log("THIS IS THE FOUND ",state.found);
           state.foundIndex = i;
           return;
         }
       }
+      console.log("NOT FOUND ANYTHING");
       state.findViewText = "لم يتم إيجاد الموظف، الرجاء التأكد من الرقم المدني"
       state.found = {ID:"",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"};
     },
@@ -69,6 +72,9 @@ const store = createStore({
     },
     updateFoundShuaiba_Expire_date (state,payload) {
       state.found['Shuaiba Expire date'] = payload;
+    },
+    setPhotosPath (state,payload) {
+      state.photosPath = payload;
     },
   },
   actions:{
@@ -111,6 +117,9 @@ const store = createStore({
     },
     updateFoundShuaiba_Expire_date(context,payload){
       context.commit('updateFoundShuaiba_Expire_date',payload);
+    },
+    setPhotosPath(context,payload){
+      context.commit('setPhotosPath',payload);
     },
   }
 })

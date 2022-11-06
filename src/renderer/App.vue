@@ -47,9 +47,14 @@ export default {
     };
   },
   mounted() {
+    console.log("I AM RAN");
     window.api.receive("fromMain", (obj) => {
       console.log(obj);
       this.$store.dispatch("updateDb", obj);
+    });
+    window.api.receive("photosPath", (obj) => {
+      console.log(obj);
+      //this.$store.dispatch("setPhotosPath", obj);
     });
   },
   computed: {

@@ -2,7 +2,7 @@
   <div v-if="$store.state.found.ID.length > 0" class="container">
     <div class="main-container">
       <div class="image-container">
-      <img class="photo" @error="$store.state.noPhoto = true;"  :src="`./assets/photos/${photoUrl}.jpg`"/>
+      <img class="photo" @error="$store.state.noPhoto = true;"  :src="`${$store.state.photosPath}${photoUrl}.jpg`"/>
        <!-- <object class="photo" :data="`./assets/photos/${$store.state.found.ID}.jpg`" type="image/jpeg">
           <img class="photo" src="`./assets/photos/no_photo.jpg`" />
         </object> -->

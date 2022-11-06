@@ -2,7 +2,7 @@
   <div class="container">
     <div class="main-container">
       <div class="image-container">
-        <img :src="`./assets/photos/${getPhoto()}.jpg`" />
+        <img :src="`${$store.state.photosPath}${getPhoto()}.jpg`" />
       </div>
       <div class="element-containers-container">
         <div class="element-container">
