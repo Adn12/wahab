@@ -2,7 +2,7 @@
   <div class="container">
     <div class="main-container">
       <div class="image-container">
-        <img :src="`${$store.state.photosPath}${getPhoto()}.jpg`" />
+        <img @click="openDialog()" :src="photoSrc" />
       </div>
       <div class="element-containers-container">
         <div class="element-container">
@@ -42,6 +42,7 @@
       </div>
     </div>
     <button class="save-button" @click="add()">إضافة موظف</button>
+    <input @change="onFileChange" type="file" style="display: none" ref="photoUpload" />
   </div>
 </template>
 
@@ -58,10 +59,45 @@ export default {
       Civil_ID_expire_date: "",
       KOC_expire_date: "",
       Shuaiba_Expire_date: "",
+      photoSrc:this.$store.state.photosPath + "add.jpg"
     };
   },
   mounted() {},
   methods: {
+     onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      console.log(files[0].path);
+      if(this.ID.length ==12){
+      if (!files.length) return;
+      else window.api.send("photoToCopy",{photoPath:files[0].path,photoName:this.ID + ".jpg"});
+      console.log({photoPath:files[0].path,photoName:this.ID + ".jpg"});
+      this.photoSrc = files[0].path;
+      }
+      else{
+        Swal.fire({
+          icon: "error",
+          title: "حصل خطأ",
+          text: "الرجاء التأكد من الرقم المدني",
+          confirmButtonText: "حسنا",
+          backdrop: false,
+          customClass: {
+            container: "alert-container",
+            popup: "alert-popup",
+            header: "alert-header",
+            title: "alert-title",
+            icon: "alert-icon",
+
+            htmlContainer: "alert-html-container",
+            confirmButton: "alert-confirm-button",
+          },
+        });
+      }
+      
+    },
+    openDialog() {
+      console.log("upload");
+      this.$refs.photoUpload.click();
+    },
     add() {
       if (this.ID.length != 12) {
         Swal.fire({

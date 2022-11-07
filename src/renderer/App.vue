@@ -23,8 +23,7 @@
     <div class="login-container" v-else>
       <label class="login-label">الرجاء ادخال كلمة السر</label>
       <input v-model="password" @keyup="checkPassword()" class="password-input" type="password" />
-      <div @click="openDialog()">UPLOAD</div>
-      <input @change="onFileChange" type="file" style="display: none" ref="photoUpload" />
+      
     </div>
   </div>
 </template>
@@ -68,16 +67,7 @@ export default {
     },
   },
   methods: {
-    onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      console.log(files[0].path);
-      if (!files.length) return;
-      
-    },
-    openDialog() {
-      console.log("upload");
-      this.$refs.photoUpload.click();
-    },
+   
     checkPassword() {
       if (this.password == "123456") {
         this.loggedIn = true;

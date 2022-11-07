@@ -1,5 +1,5 @@
 import {app, BrowserWindow, ipcMain, session} from 'electron';
-import {join} from 'path';
+import {join,basename} from 'path';
 import contextMenu from 'electron-context-menu';
 contextMenu({
 	showSaveImageAs: true,
@@ -8,10 +8,10 @@ contextMenu({
   showSelectAll:false,
   shouldShowMenu: (event, parameters) => parameters.inputFieldType == 'plainText'
 });
-import {readFileSync,writeFileSync} from 'fs';
+import {readFileSync,writeFileSync,copyFileSync} from 'fs';
 
 const path = join(app.getAppPath(), 'static', 'db.json');
-//const photosPath = join(app.getAppPath(), 'static', '/assets/photos/');
+const photosPath = join(app.getAppPath(), 'renderer', '/photos/');
 
 const buffer = readFileSync(path);
 var mainWindow;
@@ -90,4 +90,7 @@ ipcMain.on('closeApp', (event) => {
 })
 ipcMain.on('minimizeApp', (event) => {
   mainWindow.minimize();
+})
+ipcMain.on("photoToCopy",(event,args)=>{
+  copyFileSync(args.photoPath,photosPath + basename(args.photoName))
 })

@@ -2,104 +2,139 @@
   <div v-if="$store.state.found.ID.length > 0" class="container">
     <div class="main-container">
       <div class="image-container">
-      <img class="photo" @error="$store.state.noPhoto = true;"  :src="`${$store.state.photosPath}${photoUrl}.jpg`"/>
-       <!-- <object class="photo" :data="`./assets/photos/${$store.state.found.ID}.jpg`" type="image/jpeg">
+        <img @click="openDialog()" class="photo" @error="$store.state.noPhoto = true" :src="photoSrc" />
+        <!-- <object class="photo" :data="`./assets/photos/${$store.state.found.ID}.jpg`" type="image/jpeg">
           <img class="photo" src="`./assets/photos/no_photo.jpg`" />
         </object> -->
       </div>
       <div class="element-containers-container">
-    <div class="element-container">
-      <div class="element">
-        <label>الرقم المدني</label>
-        <input v-model="ID" />
-      </div>
-      <div class="element">
-        <label>الإسم</label>
-        <input v-model="Name" />
-      </div>
-      <div class="element">
-        <label>القسم</label>
-        <input v-model="Dept" />
+        <div class="element-container">
+          <div class="element">
+            <label>الرقم المدني</label>
+            <input v-model="ID" />
+          </div>
+          <div class="element">
+            <label>الإسم</label>
+            <input v-model="Name" />
+          </div>
+          <div class="element">
+            <label>القسم</label>
+            <input v-model="Dept" />
+          </div>
+        </div>
+        <div class="element-container">
+          <div class="element">
+            <label>الوظيفة</label>
+            <input v-model="Job" />
+          </div>
+          <div class="element">
+            <label>تاريخ إنتهاء البطاقة المدنية</label>
+            <input v-model="Civil_ID_expire_date" />
+          </div>
+          <div class="element">
+            <label>تاريخ انتهاء الKOC</label>
+            <input v-model="KOC_expire_date" />
+          </div>
+        </div>
+        <div class="element-container">
+          <div class="element">
+            <label>تاريخ انتهاء الشعبة</label>
+            <input v-model="Shuaiba_Expire_date" />
+          </div>
+        </div>
       </div>
     </div>
-    <div class="element-container">
-      <div class="element">
-        <label>الوظيفة</label>
-        <input v-model="Job" />
-      </div>
-      <div class="element">
-        <label>تاريخ إنتهاء البطاقة المدنية</label>
-        <input v-model="Civil_ID_expire_date" />
-      </div>
-      <div class="element">
-        <label>تاريخ انتهاء الKOC</label>
-        <input v-model="KOC_expire_date" />
-      </div>
-    </div>
-    <div class="element-container">
-      <div class="element">
-        <label>تاريخ انتهاء الشعبة</label>
-        <input v-model="Shuaiba_Expire_date" />
-      </div>
-    </div>
-    </div>
-   
-  </div>
-   <button class="save-button" @click="save()">حفظ التغييرات</button>
+    <button class="save-button" @click="save()">حفظ التغييرات</button>
+
+    <input @change="onFileChange" type="file" style="display: none" ref="photoUpload" />
   </div>
   <div class="no-search" v-else>
-    <p>{{$store.state.findViewText}}</p>
+    <p>{{ $store.state.findViewText }}</p>
   </div>
 </template>
 
 <script>
-import Swal from "sweetalert2";
+import Swal from "sweetalert2"
 
 export default {
   data() {
     return {
-     
-    };
+      photoSrc: this.$store.state.photosPath + this.$store.state.found.ID + ".jpg",
+      dataPhotoUrl: null,
+    }
   },
+  
   mounted() {
-    if(this.$store.state.searchTerm == ""){
-      this.$store.state.findViewText = "الرجاء البحث باستخدام الرقم المدني";
+    console.log(this.$store.state.photosPath + this.$store.state.found.ID + ".jpg",);
+    if (this.$store.state.searchTerm == "") {
+      this.$store.state.findViewText = "الرجاء البحث باستخدام الرقم المدني"
     }
   },
   methods: {
-    save() {
-      console.log(this.$store.state.found);
-      this.$store.dispatch("saveDbChanges");
-     window.api.send("toMain", JSON.stringify(this.$store.state.db));
-     Swal.fire({
-          icon: "success",
-          title: "نجاح!",
-          text: "تم تحديث بيانات الموظف بنجاح",
-          confirmButtonText: "حسنا",
-          backdrop: false,
-          customClass: {
-            container: "alert-container",
-            popup: "alert-popup",
-            header: "alert-header",
-            title: "alert-title",
-            icon: "alert-icon",
-
-            htmlContainer: "alert-html-container",
-            confirmButton: "alert-confirm-button",
-          },
-        });
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files
+      console.log(files[0].path)
+      if (!files.length) return
+      else {
+        window.api.send("photoToCopy", { photoPath: files[0].path, photoName: this.$store.state.found.ID + ".jpg" })
+        this.photoSrc = files[0].path
+      }
+      console.log({ photoPath: files[0].path, photoName: this.$store.state.found.ID + ".jpg" })
     },
-   
+    openDialog() {
+      console.log("upload")
+      this.$refs.photoUpload.click()
+    },
+    save() {
+      console.log(this.$store.state.found)
+      this.$store.dispatch("saveDbChanges")
+      window.api.send("toMain", JSON.stringify(this.$store.state.db))
+      Swal.fire({
+        icon: "success",
+        title: "نجاح!",
+        text: "تم تحديث بيانات الموظف بنجاح",
+        confirmButtonText: "حسنا",
+        backdrop: false,
+        customClass: {
+          container: "alert-container",
+          popup: "alert-popup",
+          header: "alert-header",
+          title: "alert-title",
+          icon: "alert-icon",
+
+          htmlContainer: "alert-html-container",
+          confirmButton: "alert-confirm-button",
+        },
+      })
+    },
+  },
+  watch:{
+    '$store.state.noPhoto': function(){
+       if (this.$store.state.noPhoto == false) {
+          //return this.$store.state.found.ID
+          this.photoSrc = this.$store.state.photosPath + this.$store.state.found.ID + ".jpg";
+        } else {
+          this.photoSrc = this.$store.state.photosPath + "no_photo" + ".jpg";
+        }
+    },
+    '$store.state.found': function(){
+      this.photoSrc = this.$store.state.photosPath + this.$store.state.found.ID + ".jpg";
+    }
   },
   computed: {
-    photoUrl(){
-      if(this.$store.state.noPhoto == false){
-        return this.$store.state.found.ID;
-      }
-      else{
-        return("no_photo");
-      }
-    },
+    // photoUrl: {
+    //   get() {
+    //     if (this.$store.state.noPhoto == false) {
+    //       //return this.$store.state.found.ID
+    //       return this.$store.state.photosPath + this.$store.state.found.ID + ".jpg";
+    //     } else {
+    //       return this.$store.state.photosPath + "no_photo" + ".jpg";
+    //     }
+    //   },
+    //   set(value){
+
+    //   }
+    // },
     // noPhoto: {
     //   get() {
     //     return this.$store.state.noPhoto;
@@ -110,62 +145,62 @@ export default {
     // },
     ID: {
       get() {
-        return this.$store.state.found.ID;
+        return this.$store.state.found.ID
       },
       set(value) {
-        this.$store.dispatch("updateFoundID", value);
+        this.$store.dispatch("updateFoundID", value)
       },
     },
     Name: {
       get() {
-        return this.$store.state.found.Name;
+        return this.$store.state.found.Name
       },
       set(value) {
-        this.$store.dispatch("updateFoundName", value);
+        this.$store.dispatch("updateFoundName", value)
       },
     },
     Dept: {
       get() {
-        return this.$store.state.found.Dept;
+        return this.$store.state.found.Dept
       },
       set(value) {
-        this.$store.dispatch("updateFoundDept", value);
+        this.$store.dispatch("updateFoundDept", value)
       },
     },
     Job: {
       get() {
-        return this.$store.state.found.Job;
+        return this.$store.state.found.Job
       },
       set(value) {
-        this.$store.dispatch("updateFoundJob", value);
+        this.$store.dispatch("updateFoundJob", value)
       },
     },
     Civil_ID_expire_date: {
       get() {
-        return this.$store.state.found["Civil ID expire date"];
+        return this.$store.state.found["Civil ID expire date"]
       },
       set(value) {
-        this.$store.dispatch("updateFoundCivil_ID_expire_date", value);
+        this.$store.dispatch("updateFoundCivil_ID_expire_date", value)
       },
     },
     KOC_expire_date: {
       get() {
-        return this.$store.state.found["KOC expire date"];
+        return this.$store.state.found["KOC expire date"]
       },
       set(value) {
-        this.$store.dispatch("updateFoundKOC_expire_date", value);
+        this.$store.dispatch("updateFoundKOC_expire_date", value)
       },
     },
     Shuaiba_Expire_date: {
       get() {
-        return this.$store.state.found["Shuaiba Expire date"];
+        return this.$store.state.found["Shuaiba Expire date"]
       },
       set(value) {
-        this.$store.dispatch("updateFoundShuaiba_Expire_date", value);
+        this.$store.dispatch("updateFoundShuaiba_Expire_date", value)
       },
     },
   },
-};
+}
 //window.api.receive("fromMain", (obj) => {});
 </script>
 <style scoped>
@@ -183,24 +218,22 @@ export default {
   justify-content: center;
   text-align: center;
 }
-.main-container{
+.main-container {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
 }
-.photo{
-  width:200px;
+.photo {
+  width: 200px;
   border-radius: 20px;
-  
 }
 
-.image-container{
-  flex:auto;
- 
+.image-container {
+  flex: auto;
 }
-.element-containers-container{
-  flex:10;
+.element-containers-container {
+  flex: 10;
 }
 .element {
   flex: 1;
@@ -226,7 +259,7 @@ input {
   font-family: "Tajawal";
   border: 1px solid #3b3b3b;
 }
-.save-button{
+.save-button {
   border-radius: 10px;
   color: black;
   border: none;
@@ -240,21 +273,20 @@ input {
   font-size: 16px;
   font-family: "Cairo";
   border: 1px solid #3b3b3b;
-  margin-top:70px;
-  margin-bottom:30px;
+  margin-top: 70px;
+  margin-bottom: 30px;
   cursor: pointer;
-  
 }
-.save-button:hover{
-background:white;
-color:black;
+.save-button:hover {
+  background: white;
+  color: black;
 }
-.no-search{
-  width:100%;
-  margin-top:200px;
- text-align: center;
- font-size:30px;
- color:#3b3b3b;
- font-family: "Cairo";
+.no-search {
+  width: 100%;
+  margin-top: 200px;
+  text-align: center;
+  font-size: 30px;
+  color: #3b3b3b;
+  font-family: "Cairo";
 }
 </style>
