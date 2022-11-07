@@ -59,21 +59,20 @@ export default {
       Civil_ID_expire_date: "",
       KOC_expire_date: "",
       Shuaiba_Expire_date: "",
-      photoSrc:this.$store.state.photosPath + "add.jpg"
+      photoSrc: this.$store.state.photosPath + "add.jpg",
     };
   },
   mounted() {},
   methods: {
-     onFileChange(e) {
+    onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       console.log(files[0].path);
-      if(this.ID.length ==12){
-      if (!files.length) return;
-      else window.api.send("photoToCopy",{photoPath:files[0].path,photoName:this.ID + ".jpg"});
-      console.log({photoPath:files[0].path,photoName:this.ID + ".jpg"});
-      this.photoSrc = files[0].path;
-      }
-      else{
+      if (this.ID.length == 12) {
+        if (!files.length) return;
+        else window.api.send("photoToCopy", { photoPath: files[0].path, photoName: this.ID + ".jpg" });
+        console.log({ photoPath: files[0].path, photoName: this.ID + ".jpg" });
+        this.photoSrc = files[0].path;
+      } else {
         Swal.fire({
           icon: "error",
           title: "حصل خطأ",
@@ -92,7 +91,6 @@ export default {
           },
         });
       }
-      
     },
     openDialog() {
       console.log("upload");
@@ -144,22 +142,22 @@ export default {
       this.$store.state.db.push({ ID: this.ID, Name: this.Name, Dept: this.Dept, Job: this.Job, "Civil ID expire date": this.Civil_ID_expire_date, "KOC expire date": this.KOC_expire_date, "Shuaiba Expire date": this.Shuaiba_Expire_date });
       window.api.send("toMain", JSON.stringify(this.$store.state.db));
       Swal.fire({
-          icon: "success",
-          title: "نجاح!",
-          text: "تم إضافة الموظف بنجاح",
-          confirmButtonText: "حسنا",
-          backdrop: false,
-          customClass: {
-            container: "alert-container",
-            popup: "alert-popup",
-            header: "alert-header",
-            title: "alert-title",
-            icon: "alert-icon",
+        icon: "success",
+        title: "نجاح!",
+        text: "تم إضافة الموظف بنجاح",
+        confirmButtonText: "حسنا",
+        backdrop: false,
+        customClass: {
+          container: "alert-container",
+          popup: "alert-popup",
+          header: "alert-header",
+          title: "alert-title",
+          icon: "alert-icon",
 
-            htmlContainer: "alert-html-container",
-            confirmButton: "alert-confirm-button",
-          },
-        });
+          htmlContainer: "alert-html-container",
+          confirmButton: "alert-confirm-button",
+        },
+      });
     },
     getPhoto() {
       return "add";
