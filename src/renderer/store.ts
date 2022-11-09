@@ -4,16 +4,24 @@ import { createStore } from 'vuex'
 const store = createStore({
   state () {
     return {
+      registrationPhotos:null,
+      isModalVisible:false,
       searchTerm:"",
       db:[],
       noPhoto:false,
-      found:{ID:"",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"},
+      found:{ID:"635e62df3150591f9508daef",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"},
       foundIndex:0,
       findViewText:"الرجاء البحث باستخدام الرقم المدني",
       photosPath:"./photos/",
     }
   },
   mutations: {
+    updateRegistrationPhotos(state,payload){
+      state.registrationPhotos = payload
+    },
+    updateIsModalVisibile(state,payload){
+      state.isModalVisible = payload;
+    },
     updateSearchTerm (state,payload) {
       state.searchTerm = payload;
     },
@@ -78,6 +86,12 @@ const store = createStore({
     },
   },
   actions:{
+    updateRegistrationPhotos(context,payload){
+      context.commit('updateRegistrationPhotos',payload);
+    },
+    updateIsModalVisibile(context,payload){
+      context.commit('updateIsModalVisibile',payload);
+    },
     updateSearchTerm(context,payload){
       context.commit('updateSearchTerm',payload);
     },

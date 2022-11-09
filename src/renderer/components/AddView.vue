@@ -1,44 +1,63 @@
 <template>
   <div class="container">
     <div class="main-container">
-      <div class="image-container">
-        <img @click="openDialog()" :src="photoSrc" />
-      </div>
+     
       <div class="element-containers-container">
         <div class="element-container">
           <div class="element">
             <label>الرقم المدني</label>
-            <input v-model="ID" />
+            <input placeholder="الرقم المدني" v-model="ID" />
           </div>
           <div class="element">
             <label>الإسم</label>
-            <input v-model="Name" />
+            <input placeholder="اسم الموظف" v-model="Name" />
+          </div>
+           <div class="element">
+            <label>التلفون</label>
+            <input placeholder="رقم الهاتف" v-model="Phone" />
+          </div>
+           <div class="element">
+            <label>الجنسية</label>
+            <input placeholder="الجنسية" v-model="Nationality" />
           </div>
           <div class="element">
             <label>القسم</label>
-            <input v-model="Dept" />
+            <select v-model="Dept">
+              <option value="قسم البطاريات">قسم البطاريات</option>
+              <option value="قسم صيانة المعدات">قسم صيانة المعدات</option>
+              <option value="قسم المحولات">قسم المحولات</option>
+              <option value="قسم الوقاية">قسم الوقاية</option>
+              <option value="قسم الإطفاء">قسم الإطفاء</option>
+              <option value="قسم أعمال المدني">قسم أعمال المدني</option>
+              <option value="الإدارة">الإدارة</option>
+            </select>
           </div>
-        </div>
-        <div class="element-container">
+       
           <div class="element">
             <label>الوظيفة</label>
-            <input v-model="Job" />
+            <input placeholder="الوظفية" v-model="Job" />
           </div>
           <div class="element">
             <label>تاريخ إنتهاء البطاقة المدنية</label>
-            <input v-model="Civil_ID_expire_date" />
+            <input placeholder="تاريخ إنتهاء البطاقة المدنية" v-model="Civil_ID_expire_date" />
           </div>
           <div class="element">
-            <label>تاريخ انتهاء الKOC</label>
-            <input v-model="KOC_expire_date" />
+            <label>تاريخ إنتهاء تصريح نفظ الكويت</label>
+            <input placeholder="تاريخ إنتهاء تصريح نفظ الكويت" v-model="KOC_expire_date" />
           </div>
-        </div>
-        <div class="element-container">
+       
           <div class="element">
-            <label>تاريخ انتهاء الشعبة</label>
-            <input v-model="Shuaiba_Expire_date" />
+            <label>تاريخ إنتهاء تصريح شعيبة الصناعية</label>
+            <input placeholder="تاريخ إنتهاء تصريح شعيبة الصناعية" v-model="Shuaiba_Expire_date" />
+          </div>
+           <div class="element">
+            <label>ملاحظات</label>
+            <input placeholder="ملاحظات" v-model="Notes" />
           </div>
         </div>
+      </div>
+       <div class="image-container">
+        <img @click="openDialog()" :src="photoSrc" />
       </div>
     </div>
     <button class="save-button" @click="add()">إضافة موظف</button>
@@ -48,7 +67,7 @@
 
 <script>
 //import Swal from "sweetalert2";
-import Swal from "sweetalert2";
+import Swal from "sweetalert2"
 export default {
   data() {
     return {
@@ -60,18 +79,18 @@ export default {
       KOC_expire_date: "",
       Shuaiba_Expire_date: "",
       photoSrc: this.$store.state.photosPath + "add.jpg",
-    };
+    }
   },
   mounted() {},
   methods: {
     onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      console.log(files[0].path);
+      var files = e.target.files || e.dataTransfer.files
+      console.log(files[0].path)
       if (this.ID.length == 12) {
-        if (!files.length) return;
-        else window.api.send("photoToCopy", { photoPath: files[0].path, photoName: this.ID + ".jpg" });
-        console.log({ photoPath: files[0].path, photoName: this.ID + ".jpg" });
-        this.photoSrc = files[0].path;
+        if (!files.length) return
+        else window.api.send("photoToCopy", { photoPath: files[0].path, photoName: this.ID + ".jpg" })
+        console.log({ photoPath: files[0].path, photoName: this.ID + ".jpg" })
+        this.photoSrc = files[0].path
       } else {
         Swal.fire({
           icon: "error",
@@ -89,12 +108,12 @@ export default {
             htmlContainer: "alert-html-container",
             confirmButton: "alert-confirm-button",
           },
-        });
+        })
       }
     },
     openDialog() {
-      console.log("upload");
-      this.$refs.photoUpload.click();
+      console.log("upload")
+      this.$refs.photoUpload.click()
     },
     add() {
       if (this.ID.length != 12) {
@@ -114,8 +133,8 @@ export default {
             htmlContainer: "alert-html-container",
             confirmButton: "alert-confirm-button",
           },
-        });
-        return;
+        })
+        return
       }
       for (var i = 0; i < this.$store.state.db.length; i++) {
         if (this.$store.state.db[i].ID == this.ID) {
@@ -135,12 +154,12 @@ export default {
               htmlContainer: "alert-html-container",
               confirmButton: "alert-confirm-button",
             },
-          });
-          return;
+          })
+          return
         }
       }
-      this.$store.state.db.push({ ID: this.ID, Name: this.Name, Dept: this.Dept, Job: this.Job, "Civil ID expire date": this.Civil_ID_expire_date, "KOC expire date": this.KOC_expire_date, "Shuaiba Expire date": this.Shuaiba_Expire_date });
-      window.api.send("toMain", JSON.stringify(this.$store.state.db));
+      this.$store.state.db.push({ ID: this.ID, Name: this.Name, Dept: this.Dept, Job: this.Job, "Civil ID expire date": this.Civil_ID_expire_date, "KOC expire date": this.KOC_expire_date, "Shuaiba Expire date": this.Shuaiba_Expire_date })
+      window.api.send("toMain", JSON.stringify(this.$store.state.db))
       Swal.fire({
         icon: "success",
         title: "نجاح!",
@@ -157,14 +176,14 @@ export default {
           htmlContainer: "alert-html-container",
           confirmButton: "alert-confirm-button",
         },
-      });
+      })
     },
     getPhoto() {
-      return "add";
+      return "add"
     },
   },
   computed: {},
-};
+}
 //window.api.receive("fromMain", (obj) => {});
 </script>
 <style scoped>
@@ -175,8 +194,7 @@ export default {
   text-align: center;
 }
 .element-container {
-  display: flex;
-  flex-wrap: wrap;
+  
   margin-bottom: 20px;
   align-items: center;
   justify-content: center;
@@ -201,6 +219,9 @@ img {
 }
 .element {
   flex: 1;
+  display: flex;
+  align-items: baseline;
+  margin-bottom:5px;
 }
 
 label {
@@ -208,20 +229,23 @@ label {
   font-family: "Cairo";
   font-size: 12px;
   display: block;
+  flex:.5;
+  text-align: center;
 }
-input {
-  border-radius: 5px;
+input,select {
+  flex:1;
+  /* border-radius: 5px; */
   color: white;
   border: none;
   width: 90%;
   direction: rtl;
-  text-align: center;
+  text-align: right;
   outline: none;
-  padding: 10px;
-  background: #000000;
-  font-size: 16px;
+  /* padding: 5px; */
+  background: #1e1f23; 
+  font-size: 12px;
   font-family: "Tajawal";
-  border: 1px solid #3b3b3b;
+  border-bottom: 1px solid #3b3b3b;
 }
 .save-button {
   border-radius: 10px;

@@ -48,13 +48,21 @@ export default {
   mounted() {
     console.log("I AM RAN");
     window.api.receive("fromMain", (obj) => {
-      console.log(obj);
+      console.log("THIS IS DB",obj);
       this.$store.dispatch("updateDb", obj);
     });
     window.api.receive("photosPath", (obj) => {
       console.log(obj);
       //this.$store.dispatch("setPhotosPath", obj);
     });
+     window.api.receive("registrationFiles", (obj) => {
+      console.log("this is files", obj)
+      //this.$store.dispatch("setPhotosPath", obj);
+      this.$store.dispatch("updateRegistrationPhotos",obj);
+      
+      this.$store.dispatch("updateIsModalVisibile",true);
+      
+    })
   },
   computed: {
     searchTerm: {
@@ -221,12 +229,11 @@ body {
   padding: 0 0 0 0;
   margin: 0 0 0 0;
 }
-body {
-}
+
 #app {
   padding: 0 0 0 0;
   background: #1e1f23;
-  height: 100%;
+   height: 100%; 
   box-shadow: 0 0 2px 0px #62d8ca inset, 0 0 2px 0px #62d8ca;
   border: 1px solid #62d8ca;
   min-height: 650px;
