@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div class="main-container">
-     
       <div class="element-containers-container">
         <div class="element-container">
           <div class="element">
@@ -12,17 +11,17 @@
             <label>الإسم</label>
             <input placeholder="اسم الموظف" v-model="Name" />
           </div>
-           <div class="element">
+          <div class="element">
             <label>التلفون</label>
-            <input placeholder="رقم الهاتف" v-model="Phone" />
+            <input placeholder="رقم الهاتف" v-model="Phone_Number" />
           </div>
-           <div class="element">
+          <div class="element">
             <label>الجنسية</label>
-            <input placeholder="الجنسية" v-model="Nationality" />
+            <input placeholder="الجنسية" v-model="Country" />
           </div>
           <div class="element">
             <label>القسم</label>
-            <select v-model="Dept">
+            <select v-model="Department">
               <option value="قسم البطاريات">قسم البطاريات</option>
               <option value="قسم صيانة المعدات">قسم صيانة المعدات</option>
               <option value="قسم المحولات">قسم المحولات</option>
@@ -32,31 +31,31 @@
               <option value="الإدارة">الإدارة</option>
             </select>
           </div>
-       
+
           <div class="element">
             <label>الوظيفة</label>
             <input placeholder="الوظفية" v-model="Job" />
           </div>
           <div class="element">
             <label>تاريخ إنتهاء البطاقة المدنية</label>
-            <input placeholder="تاريخ إنتهاء البطاقة المدنية" v-model="Civil_ID_expire_date" />
+            <input placeholder="تاريخ إنتهاء البطاقة المدنية" v-model="Civil_ID_EXP" />
           </div>
           <div class="element">
             <label>تاريخ إنتهاء تصريح نفظ الكويت</label>
-            <input placeholder="تاريخ إنتهاء تصريح نفظ الكويت" v-model="KOC_expire_date" />
+            <input placeholder="تاريخ إنتهاء تصريح نفظ الكويت" v-model="KOC_GP_EXP" />
           </div>
-       
+
           <div class="element">
             <label>تاريخ إنتهاء تصريح شعيبة الصناعية</label>
-            <input placeholder="تاريخ إنتهاء تصريح شعيبة الصناعية" v-model="Shuaiba_Expire_date" />
+            <input placeholder="تاريخ إنتهاء تصريح شعيبة الصناعية" v-model="ISHUAIBA_GP_EXP" />
           </div>
-           <div class="element">
+          <div class="element">
             <label>ملاحظات</label>
             <input placeholder="ملاحظات" v-model="Notes" />
           </div>
         </div>
       </div>
-       <div class="image-container">
+      <div class="image-container">
         <img @click="openDialog()" :src="photoSrc" />
       </div>
     </div>
@@ -73,11 +72,14 @@ export default {
     return {
       ID: "",
       Name: "",
-      Dept: "",
+      Department: "",
       Job: "",
-      Civil_ID_expire_date: "",
-      KOC_expire_date: "",
-      Shuaiba_Expire_date: "",
+      Civil_ID_EXP: "",
+      KOC_GP_EXP: "",
+      ISHUAIBA_GP_EXP: "",
+      Phone_Number: "",
+      Country: "",
+      Notes: "",
       photoSrc: this.$store.state.photosPath + "add.jpg",
     }
   },
@@ -158,7 +160,7 @@ export default {
           return
         }
       }
-      this.$store.state.db.push({ ID: this.ID, Name: this.Name, Dept: this.Dept, Job: this.Job, "Civil ID expire date": this.Civil_ID_expire_date, "KOC expire date": this.KOC_expire_date, "Shuaiba Expire date": this.Shuaiba_Expire_date })
+      this.$store.state.db.push({ID:this.ID,Name:this.Name,Department:this.Department,Job:this.Job,'Civil ID EXP':this.Civil_ID_EXP,'KOC GP EXP':this.KOC_GP_EXP,'ISHUAIBA GP EXP':this.ISHUAIBA_GP_EXP,"Phone Number":this.Phone_Number,"Country":this.Country,"Notes":this.Notes})
       window.api.send("toMain", JSON.stringify(this.$store.state.db))
       Swal.fire({
         icon: "success",
@@ -194,7 +196,6 @@ export default {
   text-align: center;
 }
 .element-container {
-  
   margin-bottom: 20px;
   align-items: center;
   justify-content: center;
@@ -221,7 +222,7 @@ img {
   flex: 1;
   display: flex;
   align-items: baseline;
-  margin-bottom:5px;
+  margin-bottom: 5px;
 }
 
 label {
@@ -229,11 +230,12 @@ label {
   font-family: "Cairo";
   font-size: 12px;
   display: block;
-  flex:.5;
+  flex: 0.5;
   text-align: center;
 }
-input,select {
-  flex:1;
+input,
+select {
+  flex: 1;
   /* border-radius: 5px; */
   color: white;
   border: none;
@@ -242,7 +244,7 @@ input,select {
   text-align: right;
   outline: none;
   /* padding: 5px; */
-  background: #1e1f23; 
+  background: #1e1f23;
   font-size: 12px;
   font-family: "Tajawal";
   border-bottom: 1px solid #3b3b3b;

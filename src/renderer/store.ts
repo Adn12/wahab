@@ -9,7 +9,7 @@ const store = createStore({
       searchTerm:"",
       db:[],
       noPhoto:false,
-      found:{ID:"635e62df3150591f9508daef",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"},
+      found:{ID:"",Name:"Name",Department:"Department",Job:"Job",'Civil ID EXP':"Civil ID EXP",'KOC GP EXP':"KOC GP EXP",'ISHUAIBA GP EXP':"ISHUAIBA GP EXP","Phone Number":"Phone Number","Country":"Country","Notes":"Notes"},
       foundIndex:0,
       findViewText:"الرجاء البحث باستخدام الرقم المدني",
       photosPath:"./photos/",
@@ -33,7 +33,7 @@ const store = createStore({
       console.log("FOUND ID",state.found.ID)
       if(state.searchTerm.length < 12) {
         console.log(state.db);
-        state.found = {ID:"",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"};
+        state.found={ID:"",Name:"Name",Department:"Department",Job:"Job",'Civil ID EXP':"Civil ID EXP",'KOC GP EXP':"KOC GP EXP",'ISHUAIBA GP EXP':"ISHUAIBA GP EXP","Phone Number":"Phone Number","Country":"Country","Notes":"Notes"};
         return;
       }
       console.log(state.db);
@@ -48,7 +48,7 @@ const store = createStore({
       }
       console.log("NOT FOUND ANYTHING");
       state.findViewText = "لم يتم إيجاد الموظف، الرجاء التأكد من الرقم المدني"
-      state.found = {ID:"",Name:"Name",Dept:"Dept",Job:"Job",'Civil ID expire date':"Civil_ID_expire_date",'KOC expire date':"KOC_expire_date",'Shuaiba Expire date':"Shuaiba_Expire_date"};
+      state.found = {ID:"",Name:"Name",Department:"Department",Job:"Job",'Civil ID EXP':"Civil ID EXP",'KOC GP EXP':"KOC GP EXP",'ISHUAIBA GP EXP':"ISHUAIBA GP EXP","Phone Number":"Phone Number","Country":"Country","Notes":"Notes"};
     },
     saveDbChanges(state){
      
@@ -66,20 +66,29 @@ const store = createStore({
     updateFoundName (state,payload) {
       state.found.Name = payload;
     },
-    updateFoundDept (state,payload) {
-      state.found.Dept  = payload;
+    updateFoundDepartment (state,payload) {
+      state.found.Department  = payload;
     },
     updateFoundJob (state,payload) {
       state.found.Job = payload;
     },
-    updateFoundCivil_ID_expire_date (state,payload) {
-      state.found['Civil ID expire date'] = payload;
+    updateFoundCivil_ID_EXP (state,payload) {
+      state.found['Civil ID EXP'] = payload;
     },
-    updateFoundKOC_expire_date (state,payload) {
-      state.found['KOC expire date'] = payload;
+    updateFoundKOC_GP_EXP (state,payload) {
+      state.found['KOC GP EXP'] = payload;
     },
-    updateFoundShuaiba_Expire_date (state,payload) {
-      state.found['Shuaiba Expire date'] = payload;
+    updateFoundISHUAIBA_GP_EXP (state,payload) {
+      state.found['ISHUAIBA GP EXP'] = payload;
+    },
+    updateFoundPhone_Number (state,payload) {
+      state.found['Phone Number'] = payload;
+    },
+    updateFoundCountry (state,payload) {
+      state.found['Country'] = payload;
+    },
+    updateFoundNotes (state,payload) {
+      state.found['Notes'] = payload;
     },
     setPhotosPath (state,payload) {
       state.photosPath = payload;
@@ -117,20 +126,29 @@ const store = createStore({
     updateFoundName(context,payload){
       context.commit('updateFoundName',payload);
     },
-    updateFoundDept(context,payload){
-      context.commit('updateFoundDept',payload);
+    updateFoundDepartment(context,payload){
+      context.commit('updateFoundDepartment',payload);
     },
     updateFoundJob(context,payload){
       context.commit('updateFoundJob',payload);
     },
-    updateFoundCivil_ID_expire_date(context,payload){
-      context.commit('updateFoundCivil_ID_expire_date',payload);
+    updateFoundCivil_ID_EXP(context,payload){
+      context.commit('updateFoundCivil_ID_EXP',payload);
     },
-    updateFoundKOC_expire_date(context,payload){
-      context.commit('updateFoundKOC_expire_date',payload);
+    updateFoundKOC_GP_EXP(context,payload){
+      context.commit('updateFoundKOC_GP_EXP',payload);
     },
-    updateFoundShuaiba_Expire_date(context,payload){
-      context.commit('updateFoundShuaiba_Expire_date',payload);
+    updateFoundISHUAIBA_GP_EXP(context,payload){
+      context.commit('updateFoundISHUAIBA_GP_EXP',payload);
+    },
+    updateFoundPhone_Number (context,payload) {
+      context.dispatch('updateFoundPhone_Number',payload);
+    },
+    updateFoundCountry (context,payload) {
+      context.commit('updateFoundCountry',payload);
+    },
+    updateFoundNotes (context,payload) {
+      context.commit('updateFoundNotes',payload);
     },
     setPhotosPath(context,payload){
       context.commit('setPhotosPath',payload);

@@ -1,12 +1,28 @@
 <script>
 export default {
   name: "Modal",
-  
-  mounted(){
-    console.log(this.$store.state.registrationPhotos);
+  data() {
+    return {
+      //isgImgSrc: `'url(${this.$store.state.photosPath + this.$store.state.found.ID}/isg${this.$store.state.found.ID}.jpg)'`,
+    }
+  },
+  computed: {
+    kocImgSrc() {
+      return `background-image:url(${this.$store.state.photosPath + this.$store.state.found.ID}/koc${this.$store.state.found.ID}.jpg)`
+    },
+    isgImgSrc() {
+      return `background-image:url(${this.$store.state.photosPath + this.$store.state.found.ID}/isg${this.$store.state.found.ID}.jpg)`
+    },
+  },
+
+  mounted() {
+    console.log(this.$store.state.registrationPhotos)
+    console.log(this.kocImgSrc)
   },
   methods: {
     close() {
+      console.log(this.$store.state.found)
+      console.log(this.kocImgSrc)
       this.$emit("close")
     },
   },
@@ -20,14 +36,19 @@ export default {
         <header class="modal-header" id="modalTitle">تصاريح الموظف: {{ $store.state.found.Name }}</header>
 
         <section class="modal-body" id="modalDescription">
-          <slot name="body"> This is the default body! </slot>
+          <div class="img-element">
+            <div class="img koc-image" :style=" kocImgSrc "></div>
+            <div class="btns koc-button">رفع تصريح نفط الكويت</div>
+          </div>
+          <div class="img-element">
+            <div class="img isg-image" :style="isgImgSrc"></div>
+            <div class="btns isg-button">رفع تصريح شعيبة الصناعية</div>
+          </div>
         </section>
 
-        <footer class="modal-footer">
-          This is the default footer!
-
+        <div class="close-btn-container">
           <button type="button" class="btn-green" @click="close" aria-label="Close modal">إغلاق</button>
-        </footer>
+        </div>
       </div>
     </div>
   </transition>
@@ -52,11 +73,12 @@ export default {
   /* box-shadow: 2px 2px 20px 1px; */
   overflow-x: auto;
   border-radius: 5px;
-  
+  /* width:800px; */
   border: 1px solid #d6d862;
   display: flex;
   flex-direction: column;
   font-family: "Cairo";
+  text-align: center;
 }
 
 .modal-header,
@@ -69,7 +91,7 @@ export default {
 .modal-header {
   position: relative;
   border-bottom: 1px solid #eeeeee;
- color: white;
+  color: white;
   justify-content: space-between;
 }
 
@@ -77,32 +99,66 @@ export default {
   border-top: 1px solid #eeeeee;
   flex-direction: column;
 }
-
+.close-btn-container {
+  text-align: center;
+}
 .modal-body {
   position: relative;
   padding: 20px 10px;
+  display: flex;
+  padding: 5px;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
+.img-element {
+  text-align: center;
+  flex: 1;
+  max-width: 300px;
+  margin: 10px;
+}
+.img {
+  width: 300px;
+  height: 400px;
+  border: 1px solid #3b3b3b;
+  border-radius: 5px;
+  background-size: cover;
+}
+.btns {
+  flex: 1;
+  border: 1px solid white;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  padding: 5px;
+  margin: 5px;
+}
+.btns:hover {
+  background: white;
+  color: black;
 }
 
 .btn-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: none;
   font-size: 20px;
+  margin: 10px;
   padding: 10px;
   cursor: pointer;
   font-weight: bold;
   color: #4aae9b;
   background: transparent;
+  cursor: pointer;
   font-family: "Cairo";
 }
 
 .btn-green {
   color: white;
+  width: 50%;
   font-family: "Cairo";
   background: #4aae9b;
   border: 1px solid #4aae9b;
   border-radius: 2px;
+  margin: 0 auto 0 auto;
+  margin: 10px;
 }
 
 .modal-fade-enter,

@@ -13,15 +13,15 @@
           </div>
           <div class="element">
             <label>التلفون</label>
-            <input placeholder="رقم الهاتف" v-model="Phone" />
+            <input placeholder="رقم الهاتف" v-model="Phone_Number" />
           </div>
           <div class="element">
             <label>الجنسية</label>
-            <input placeholder="الجنسية" v-model="Nationality" />
+            <input placeholder="الجنسية" v-model="Country" />
           </div>
           <div class="element">
             <label>القسم</label>
-            <select v-model="Dept">
+            <select v-model="Department">
               <option value="قسم البطاريات">قسم البطاريات</option>
               <option value="قسم صيانة المعدات">قسم صيانة المعدات</option>
               <option value="قسم المحولات">قسم المحولات</option>
@@ -38,16 +38,16 @@
           </div>
           <div class="element">
             <label>تاريخ إنتهاء البطاقة المدنية</label>
-            <input placeholder="تاريخ إنتهاء البطاقة المدنية" v-model="Civil_ID_expire_date" />
+            <input v-model="Civil_ID_EXP" placeholder="تاريخ إنتهاء البطاقة المدنية"  />
           </div>
           <div class="element">
             <label>تاريخ إنتهاء تصريح نفظ الكويت</label>
-            <input placeholder="تاريخ إنتهاء تصريح نفظ الكويت" v-model="KOC_expire_date" />
+            <input placeholder="تاريخ إنتهاء تصريح نفظ الكويت" v-model="KOC_GP_EXP" />
           </div>
 
           <div class="element">
             <label>تاريخ إنتهاء تصريح شعيبة الصناعية</label>
-            <input placeholder="تاريخ إنتهاء تصريح شعيبة الصناعية" v-model="Shuaiba_Expire_date" />
+            <input placeholder="تاريخ إنتهاء تصريح شعيبة الصناعية" v-model="ISHUAIBA_GP_EXP" />
           </div>
           <div class="element">
             <label>ملاحظات</label>
@@ -91,9 +91,7 @@ export default {
   },
   data() {
     return {
-      Phone:"",
-      Nationality:"",
-      Notes:"",
+      
       photoSrc: this.$store.state.photosPath + this.$store.state.found.ID + ".jpg",
       dataPhotoUrl: null,
     }
@@ -209,6 +207,14 @@ export default {
     //     this.$store.dispatch("updateNoPhoto", value);
     //   },
     // },
+    Civil_ID_EXP: {
+      get() {
+        return this.$store.state.found["Civil ID EXP"]
+      },
+      set(value) {
+        this.$store.dispatch("updateFoundCivil_ID_EXP", value)
+      },
+    },
     ID: {
       get() {
         return this.$store.state.found.ID
@@ -225,12 +231,12 @@ export default {
         this.$store.dispatch("updateFoundName", value)
       },
     },
-    Dept: {
+    Department: {
       get() {
-        return this.$store.state.found.Dept
+        return this.$store.state.found.Department
       },
       set(value) {
-        this.$store.dispatch("updateFoundDept", value)
+        this.$store.dispatch("updateFoundDepartment", value)
       },
     },
     Job: {
@@ -241,28 +247,45 @@ export default {
         this.$store.dispatch("updateFoundJob", value)
       },
     },
-    Civil_ID_expire_date: {
+    
+    KOC_GP_EXP: {
       get() {
-        return this.$store.state.found["Civil ID expire date"]
+        return this.$store.state.found["KOC GP EXP"]
       },
       set(value) {
-        this.$store.dispatch("updateFoundCivil_ID_expire_date", value)
+        this.$store.dispatch("updateFoundKOC_GP_EXP", value)
       },
     },
-    KOC_expire_date: {
+    ISHUAIBA_GP_EXP: {
       get() {
-        return this.$store.state.found["KOC expire date"]
+        return this.$store.state.found["ISHUAIBA GP EXP"]
       },
       set(value) {
-        this.$store.dispatch("updateFoundKOC_expire_date", value)
+        this.$store.dispatch("updateFoundISHUAIBA_GP_EXP", value)
       },
     },
-    Shuaiba_Expire_date: {
+    Phone_Number: {
       get() {
-        return this.$store.state.found["Shuaiba Expire date"]
+        return this.$store.state.found['Phone Number']
       },
       set(value) {
-        this.$store.dispatch("updateFoundShuaiba_Expire_date", value)
+        this.$store.dispatch("updateFoundPhone_Number", value)
+      },
+    },
+    Country: {
+      get() {
+        return this.$store.state.found['Country']
+      },
+      set(value) {
+        this.$store.dispatch("updateFoundCountry", value)
+      },
+    },
+    Notes: {
+      get() {
+        return this.$store.state.found['Notes']
+      },
+      set(value) {
+        this.$store.dispatch("updateFoundNotes", value)
       },
     },
   },
@@ -291,6 +314,7 @@ export default {
 .photo {
   width: 200px;
   border-radius: 20px;
+  cursor: pointer;
 }
 
 .image-container {
@@ -309,7 +333,7 @@ export default {
 label {
   color: white;
   font-family: "Cairo";
-  font-size: 12px;
+  font-size: 13px;
   display: block;
   flex: 0.5;
   text-align: center;
