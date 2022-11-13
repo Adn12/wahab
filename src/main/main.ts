@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, session } from "electron"
+import { app, BrowserWindow, ipcMain, session,shell } from "electron"
 import { join, basename } from "path"
 import contextMenu from "electron-context-menu"
 contextMenu({
@@ -39,7 +39,7 @@ function createWindow() {
       console.log(buffer)
       //mainWindow.webContents.on('dom-ready', () => {
       mainWindow.webContents.send("fromMain", JSON.parse(buffer))
-      mainWindow.webContents.send("photosPath", path)
+      mainWindow.webContents.send("photosPath", photosPath)
       //})
     })
   } else {
@@ -48,7 +48,7 @@ function createWindow() {
     const buffer = readFileSync(path, "utf8")
     mainWindow.webContents.on("dom-ready", () => {
       mainWindow.webContents.send("fromMain", JSON.parse(buffer))
-      mainWindow.webContents.send("photosPath", path)
+      mainWindow.webContents.send("photosPath", photosPath)
     })
   }
 }
@@ -83,6 +83,10 @@ ipcMain.on("toMain", (event, args) => {
   writeFileSync(path, args)
 })
 ipcMain.on("closeApp", (event) => {
+  var nowDate = new Date(); 
+  const backupPath = join(app.getAppPath(), "static", "backup_")
+var date = nowDate.getFullYear()+'_'+(nowDate.getMonth()+1)+'_'+nowDate.getDate(); 
+copyFileSync(path,backupPath + date + ".json");
   app.quit()
 })
 ipcMain.on("minimizeApp", (event) => {
@@ -91,12 +95,19 @@ ipcMain.on("minimizeApp", (event) => {
 ipcMain.on("photoToCopy", (event, args) => {
   copyFileSync(args.photoPath, photosPath + basename(args.photoName))
 })
+ipcMain.on("copyKoc", (event, args) => {
+  copyFileSync(args.photoPath, photosPath + `${args.id}/`+ basename(args.photoName))
+})
+ipcMain.on("copyIsg", (event, args) => {
+  copyFileSync(args.photoPath, photosPath + `${args.id}/`+ basename(args.photoName))
+})
 ipcMain.on('requestRegistration',async (event,args)=>{
-  readRegistrationFiles(args).then((result)=>{
-    console.log("THIS IS RESULT",result);
-    mainWindow.webContents.send("registrationFiles", result)
+  readRegistrationFiles(args).then(result=>{
+    
+    shell.openPath(result);
+    //mainWindow.webContents.send("registrationFiles", result)
   }).catch(err=>{
-    mainWindow.webContents.send("registrationFiles", err)
+    //mainWindow.webContents.send("registrationFiles", err)
   })
  
   // if(result != false){
@@ -109,21 +120,17 @@ ipcMain.on('requestRegistration',async (event,args)=>{
 function readRegistrationFiles(id) {
   return new Promise((resolve, reject) => {
     const path = join(photosPath, id)
-    var result;
+    
     if (!existsSync(path)) {
       mkdirSync(path)
-      return resolve(false)
+      return resolve(path)
     } else {
-      readdir(path, (err, fileNames) => {
-        if(err){
-          return  reject(err);
-          
-        }
-        result = fileNames;
-       console.log("INSIDE PROMISE",result);
-       return resolve(result)
-      })
+      
+       
+       return resolve(path)
+      
       
     }
+    
   })
 }

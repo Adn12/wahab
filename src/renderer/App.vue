@@ -31,6 +31,7 @@
 <script>
 //import FindView from "./components/FindView.vue"
 //import Swal from "sweetalert2"
+
 export default {
   data() {
     return {
@@ -53,14 +54,14 @@ export default {
     });
     window.api.receive("photosPath", (obj) => {
       console.log(obj);
-      //this.$store.dispatch("setPhotosPath", obj);
+      this.$store.dispatch("setPhotosPath", obj);
     });
      window.api.receive("registrationFiles", (obj) => {
       console.log("this is files", obj)
       //this.$store.dispatch("setPhotosPath", obj);
-      this.$store.dispatch("updateRegistrationPhotos",obj);
+      //this.$store.dispatch("updateRegistrationPhotos",obj);
       
-      this.$store.dispatch("updateIsModalVisibile",true);
+      //this.$store.dispatch("updateIsModalVisibile",true);
       
     })
   },

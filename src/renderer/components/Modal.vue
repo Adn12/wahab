@@ -8,10 +8,10 @@ export default {
   },
   computed: {
     kocImgSrc() {
-      return `background-image:url(${this.$store.state.photosPath + this.$store.state.found.ID}/koc${this.$store.state.found.ID}.jpg)`
+      return `background-image:url("${this.$store.state.photosPath + this.$store.state.found.ID}/koc${this.$store.state.found.ID}.jpg")`
     },
     isgImgSrc() {
-      return `background-image:url(${this.$store.state.photosPath + this.$store.state.found.ID}/isg${this.$store.state.found.ID}.jpg)`
+      return `background-image:url("${this.$store.state.photosPath + this.$store.state.found.ID}/isg${this.$store.state.found.ID}.jpg")`
     },
   },
 
@@ -25,6 +25,76 @@ export default {
       console.log(this.kocImgSrc)
       this.$emit("close")
     },
+    openDialog(type) {
+      console.log("upload")
+      if(type=="koc") this.$refs.photoUploadKoc.click();
+      else this.$refs.photoUploadIsg.click()
+      
+    },
+    onFileChangeKoc(e) {
+      var files = e.target.files || e.dataTransfer.files
+      console.log(files[0].path)
+      if (files[0].path.slice(-4) != ".jpg") {
+        Swal.fire({
+          icon: "error",
+          title: "حصل خطأ",
+          text: "الرجاء التأكد ان نوع الملف .jpg",
+          confirmButtonText: "حسنا",
+          backdrop: false,
+          customClass: {
+            container: "alert-container",
+            popup: "alert-popup",
+            header: "alert-header",
+            title: "alert-title",
+            icon: "alert-icon",
+
+            htmlContainer: "alert-html-container",
+            confirmButton: "alert-confirm-button",
+          },
+        })
+        return
+      }
+
+      console.log(files[0].path)
+      if (!files.length) return
+      else {
+        window.api.send("copyKoc", { photoPath: files[0].path, photoName: 'koc' + this.$store.state.found.ID + ".jpg",id:this.$store.state.found.ID })
+        this.photoSrc = files[0].path
+      }
+      //console.log({ photoPath: files[0].path, photoName: this.$store.state.found.ID + ".jpg" })
+    },
+     onFileChangeIsg(e) {
+      var files = e.target.files || e.dataTransfer.files
+      console.log(files[0].path)
+      if (files[0].path.slice(-4) != ".jpg") {
+        Swal.fire({
+          icon: "error",
+          title: "حصل خطأ",
+          text: "الرجاء التأكد ان نوع الملف .jpg",
+          confirmButtonText: "حسنا",
+          backdrop: false,
+          customClass: {
+            container: "alert-container",
+            popup: "alert-popup",
+            header: "alert-header",
+            title: "alert-title",
+            icon: "alert-icon",
+
+            htmlContainer: "alert-html-container",
+            confirmButton: "alert-confirm-button",
+          },
+        })
+        return
+      }
+
+      console.log(files[0].path)
+      if (!files.length) return
+      else {
+        window.api.send("copyIsg", { photoPath: files[0].path, photoName: 'isg' + this.$store.state.found.ID + ".jpg",id:this.$store.state.found.ID })
+        this.photoSrc = files[0].path
+      }
+      //console.log({ photoPath: files[0].path, photoName: this.$store.state.found.ID + ".jpg" })
+    },
   },
 }
 </script>
@@ -37,12 +107,12 @@ export default {
 
         <section class="modal-body" id="modalDescription">
           <div class="img-element">
-            <div class="img koc-image" :style=" kocImgSrc "></div>
-            <div class="btns koc-button">رفع تصريح نفط الكويت</div>
+            <div class="img koc-image" :style=" kocImgSrc "> a</div>
+            <div @click="openDialog('koc')" class="btns koc-button">رفع تصريح نفط الكويت</div>
           </div>
           <div class="img-element">
-            <div class="img isg-image" :style="isgImgSrc"></div>
-            <div class="btns isg-button">رفع تصريح شعيبة الصناعية</div>
+            <div class="img isg-image" :style="isgImgSrc">a </div>
+            <div @click="openDialog('isg')" class="btns isg-button">رفع تصريح شعيبة الصناعية</div>
           </div>
         </section>
 
@@ -50,7 +120,10 @@ export default {
           <button type="button" class="btn-green" @click="close" aria-label="Close modal">إغلاق</button>
         </div>
       </div>
+       <input @change="onFileChangeKoc" type="file" style="display: none" ref="photoUploadKoc" accept="image/jpeg" />
+    <input @change="onFileChangeIsg" type="file" style="display: none" ref="photoUploadIsg" accept="image/jpeg" />
     </div>
+   
   </transition>
 </template>
 

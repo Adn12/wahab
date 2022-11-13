@@ -113,6 +113,10 @@ export default {
     openRegistration() {
       window.api.send("requestRegistration", this.$store.state.found.ID)
     },
+    openDialog() {
+      console.log("upload")
+      this.$refs.photoUpload.click()
+    },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files
       console.log(files[0].path)
@@ -145,10 +149,7 @@ export default {
       }
       console.log({ photoPath: files[0].path, photoName: this.$store.state.found.ID + ".jpg" })
     },
-    openDialog() {
-      console.log("upload")
-      this.$refs.photoUpload.click()
-    },
+    
     save() {
       console.log(this.$store.state.found)
       this.$store.dispatch("saveDbChanges")
